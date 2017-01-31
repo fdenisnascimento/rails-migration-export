@@ -1,0 +1,16 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: omaha_order_manager_development
+
+test:
+  <<: *default
+  database: omaha_order_manager_test
+
+production:
+  <<: *default
+  database: omaha_order_manager_production

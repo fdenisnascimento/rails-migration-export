@@ -1,0 +1,15 @@
+# This is the configuration used to check the rubocop source code.
+AllCops:
+  TargetRubyVersion: 2.3
+Rails:
+  Enabled: true
+Style/EmptyLinesAroundClassBody:
+  EnforcedStyle: empty_lines
+Style/EmptyLinesAroundModuleBody:
+  EnforcedStyle: empty_lines
+Metrics/LineLength:
+  Max: 150
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+Documentation:
+  Enabled: false
