@@ -4,7 +4,7 @@ desc 'Migration export to sql file with name migration.sql'
 namespace :db do
   SQL_FILENAME = 'migrate.sql'
 
-  task migration_export: :environment do
+  task migrate_and_export: :environment do
     create_file
 
     CURRENT_VERSION = ActiveRecord::Base.connection.execute('select max(version) as version from schema_migrations').first['version']
@@ -23,7 +23,7 @@ namespace :db do
     Rake::Task['db:migrate'].invoke
 
     File.open(SQL_FILENAME, 'a') do |f|
-      ActiveRecord::Migrator.migrations("#{Rails.root}/db/migrate").map do |t|
+      migrations.map do |t|
         if t.version.to_i > CURRENT_VERSION.to_i
           f.puts "INSERT INTO schema_migrations (version) VALUES ('#{t.version}'); "
         end
@@ -32,14 +32,31 @@ namespace :db do
   end
 
   # migration for new database
-  task migration_export_db: :environment do
+  task migrate_and_export_all_db: :environment do
     create_file
     Rake::Task['db:structure:dump'].invoke
     FileUtils.mv("#{Rails.root}/db/structure.sql", SQL_FILENAME)
+  end
+
+  def migrations
+    if version <=> '5.2.0' <= -1
+      ActiveRecord::MigrationContext.new("#{Rails.root}/db/migrate").migrations
+    else
+      ActiveRecord::Migrator.migrations("#{Rails.root}/db/migrate")
+<<<<<<< HEAD
+    end
+=======
+    end  
+>>>>>>> 0841e80... second version with retro compatibility
+  end
+
+  def version
+    Gem.loaded_specs['activerecord'].version
   end
 
   def create_file
     file = File.open(SQL_FILENAME, 'w')
     file.close
   end
+
 end
