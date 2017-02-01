@@ -1,5 +1,7 @@
 # This is the configuration used to check the rubocop source code.
 AllCops:
+  Exclude:
+    - lib/migration_export/tasks/db.rake
   TargetRubyVersion: 2.3
 Rails:
   Enabled: true

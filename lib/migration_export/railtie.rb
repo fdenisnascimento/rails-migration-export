@@ -2,16 +2,12 @@
 require 'migration_export'
 require 'rails'
 
-module MigrationExport
+module MigrationExport end
 
-  class Railtie < Rails::Railtie
+class Railtie < Rails::Railtie
 
-    railtie_name :migration_export
-
-    rake_tasks do
-      load 'migration_export/db.rake'
-    end
-
+  rake_tasks do
+    Dir[File.join(File.dirname(__FILE__), 'tasks/*.rake')].each { |f| load f }
   end
 
 end
