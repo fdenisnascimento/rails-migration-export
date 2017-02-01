@@ -4,7 +4,7 @@ desc 'Migration export to sql file with name migration.sql'
 namespace :db do
   SQL_FILENAME = 'migrate.sql'
 
-  task migration_export: :environment do
+  task migrate_and_export: :environment do
     create_file
 
     CURRENT_VERSION = ActiveRecord::Base.connection.execute('select max(version) as version from schema_migrations').first['version']
@@ -32,7 +32,7 @@ namespace :db do
   end
 
   # migration for new database
-  task migration_export_db: :environment do
+  task migrate_and_export_all_db: :environment do
     create_file
     Rake::Task['db:structure:dump'].invoke
     FileUtils.mv("#{Rails.root}/db/structure.sql", SQL_FILENAME)
