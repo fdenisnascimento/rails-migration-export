@@ -23,7 +23,7 @@ namespace :db do
     Rake::Task['db:migrate'].invoke
 
     File.open(SQL_FILENAME, 'a') do |f|
-      ActiveRecord::Migrator.migrations("#{Rails.root}/db/migrate").map do |t|
+      ActiveRecord::Migrator.migrations_path("#{Rails.root}/db/migrate").map do |t|
         if t.version.to_i > CURRENT_VERSION.to_i
           f.puts "INSERT INTO schema_migrations (version) VALUES ('#{t.version}'); "
         end
