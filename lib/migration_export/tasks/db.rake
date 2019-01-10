@@ -22,7 +22,6 @@ namespace :db do
 
     Rake::Task['db:migrate'].invoke
 
-    # ActiveRecord::Migrator.migrations_paths = "#{Rails.root}/db/migrate"
     File.open(SQL_FILENAME, 'a') do |f|
       ActiveRecord::MigrationContext("#{Rails.root}/db/migrate").migrations.map do |t|
         if t.version.to_i > CURRENT_VERSION.to_i
@@ -44,30 +43,4 @@ namespace :db do
     file.close
   end
 
-=begin
-  class ActiveRecord::Migrator
-    def self.migrations(paths)
-      paths = Array(paths)
-
-      migrations = migration_files(paths).map do |file|
-          version, name, scope = parse_migration_filename(file)
-          raise IllegalMigrationNameError.new(file) unless version
-          version = version.to_i
-          name = name.camelize
-
-          MigrationProxy.new(name, version, file, scope)
-      end
-
-      migrations.sort_by(&:version)
-    end
-
-    def self.parse_migration_filename(filename) # :nodoc:
-      File.basename(filename).scan(Migration::MigrationFilenameRegexp).first
-    end
-
-    def self.migration_files(paths)
-        Dir[*paths.flat_map { |path| "#{path}/**/[0-9]*_*.rb" }]
-    end
-  end
-  =end
 end
