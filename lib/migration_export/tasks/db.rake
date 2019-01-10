@@ -39,8 +39,10 @@ namespace :db do
   end
 
   def migrations
-    puts version
-    ActiveRecord::MigrationContext.new("#{Rails.root}/db/migrate").migrations
+    if version > '5.2.0.beta2'
+      ActiveRecord::MigrationContext.new("#{Rails.root}/db/migrate").migrations
+    else
+      ActiveRecord::Migrator.migrations("#{Rails.root}/db/migrate")
   end
 
   def version
