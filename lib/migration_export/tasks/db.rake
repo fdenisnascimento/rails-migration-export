@@ -60,6 +60,10 @@ namespace :db do
       migrations.sort_by(&:version)
     end
 
+    def self.parse_migration_filename(filename) # :nodoc:
+      File.basename(filename).scan(Migration::MigrationFilenameRegexp).first
+    end
+
     def self.migration_files(paths)
         Dir[*paths.flat_map { |path| "#{path}/**/[0-9]*_*.rb" }]
     end
