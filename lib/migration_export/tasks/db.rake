@@ -24,7 +24,7 @@ namespace :db do
 
     # ActiveRecord::Migrator.migrations_paths = "#{Rails.root}/db/migrate"
     File.open(SQL_FILENAME, 'a') do |f|
-      ActiveRecord::Migrator.migrations("#{Rails.root}/db/migrate").map do |t|
+      ActiveRecord::MigrationContext("#{Rails.root}/db/migrate").migrations.map do |t|
         if t.version.to_i > CURRENT_VERSION.to_i
           f.puts "INSERT INTO schema_migrations (version) VALUES ('#{t.version}'); "
         end
@@ -44,6 +44,7 @@ namespace :db do
     file.close
   end
 
+=begin
   class ActiveRecord::Migrator
     def self.migrations(paths)
       paths = Array(paths)
@@ -68,4 +69,5 @@ namespace :db do
         Dir[*paths.flat_map { |path| "#{path}/**/[0-9]*_*.rb" }]
     end
   end
+  =end
 end
