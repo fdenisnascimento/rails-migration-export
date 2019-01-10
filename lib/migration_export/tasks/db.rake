@@ -23,7 +23,7 @@ namespace :db do
     Rake::Task['db:migrate'].invoke
 
     File.open(SQL_FILENAME, 'a') do |f|
-      ActiveRecord::MigrationContext.new("#{Rails.root}/db/migrate").migrations.map do |t|
+      migrations.map do |t|
         if t.version.to_i > CURRENT_VERSION.to_i
           f.puts "INSERT INTO schema_migrations (version) VALUES ('#{t.version}'); "
         end
@@ -36,6 +36,15 @@ namespace :db do
     create_file
     Rake::Task['db:structure:dump'].invoke
     FileUtils.mv("#{Rails.root}/db/structure.sql", SQL_FILENAME)
+  end
+
+  def migrations
+    puts version
+    ActiveRecord::MigrationContext.new("#{Rails.root}/db/migrate").migrations
+  end
+
+  def version
+    Gem.loaded_specs['activerecord'].version
   end
 
   def create_file
