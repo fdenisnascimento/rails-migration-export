@@ -43,11 +43,7 @@ namespace :db do
       ActiveRecord::MigrationContext.new("#{Rails.root}/db/migrate").migrations
     else
       ActiveRecord::Migrator.migrations("#{Rails.root}/db/migrate")
-<<<<<<< HEAD
     end
-=======
-    end  
->>>>>>> 0841e80... second version with retro compatibility
   end
 
   def version
