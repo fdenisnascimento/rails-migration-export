@@ -39,15 +39,15 @@ namespace :db do
   end
 
   def migrations
-    if version <=> '5.2.0' <= -1
+    if (active_record_version <=> '5.2.0') >= 0
       ActiveRecord::MigrationContext.new("#{Rails.root}/db/migrate").migrations
     else
       ActiveRecord::Migrator.migrations("#{Rails.root}/db/migrate")
     end
   end
 
-  def version
-    Gem.loaded_specs['activerecord'].version
+  def active_record_version
+    Gem.loaded_specs['activerecord'].version.to_s
   end
 
   def create_file
